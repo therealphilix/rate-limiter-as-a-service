@@ -20,6 +20,7 @@ Two deliberate design decisions worth knowing:
 
 import uuid
 from datetime import datetime
+from typing import List
 
 import structlog
 from fastapi import APIRouter, Depends, Header, HTTPException, Request
@@ -167,7 +168,7 @@ async def create_key(
     )
 
 
-@router.get("/keys", response_model=list[KeyOutput])
+@router.get("/keys", response_model=List[KeyOutput])
 async def list_keys(
     tenant_id: uuid.UUID | None = None,
     db: AsyncSession = Depends(get_db),
@@ -182,14 +183,15 @@ async def list_keys(
     result = await db.execute(query)
     keys   = result.scalars().all()
 
-    return [
-        KeyOutput(
-            id=k.id, label=k.label, tenant_id=k.tenant_id,
-            is_active=k.is_active, created_at=k.created_at,
-            last_used_at=k.last_used_at,
-        )
-        for k in keys
-    ]
+    # return [
+    #     KeyOutput(
+    #         id=k.id, label=k.label, tenant_id=k.tenant_id,
+    #         is_active=k.is_active, created_at=k.created_at,
+    #         last_used_at=k.last_used_at,
+    #     )
+    #     for k in keys
+    # ]
+    return keys  # Pydantic can convert SQLAlchemy models directly
 
 
 @router.delete("/keys/{key_id}", status_code=204)
@@ -243,7 +245,7 @@ async def create_rule(
     existing = await db.execute(
         select(RateLimitRule).where(
             RateLimitRule.tenant_id == body.tenant_id,
-            RateLimitRule.resource  == body.resource,
+            RateLimitRule.resource  == body.resource, 
         )
     )
     if existing.scalar_one_or_none():

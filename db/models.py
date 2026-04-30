@@ -95,7 +95,7 @@ class RateLimitRule(Base):
     resource: Mapped[str] = mapped_column(String(200), nullable=False)
 
     algorithm: Mapped[str] = mapped_column(
-        String(50), nullable=False, default="sliding_window"
+        String(50), nullable=False, default="sliding_window" 
         # Valid values: "sliding_window" | "token_bucket"
         # In M4 we'll add a DB-level check constraint to enforce this.
     )

@@ -35,7 +35,7 @@ load_dotenv()
 setup_logging()
 log = structlog.get_logger()
 
-REDIS_URL    = os.getenv("REDIS_URL", "redis://localhost:6379")
+REDIS_URL    = os.getenv("REDIS_URL", "redis://localhost:6379/1")
 FALLBACK_ALLOW = os.getenv("FALLBACK_ALLOW", "true").lower() == "true"
 ADMIN_SECRET = os.getenv("ADMIN_SECRET", "change-me-in-production")
 

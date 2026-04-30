@@ -7,7 +7,7 @@ Why structlog instead of Python's built-in logging?
   Built-in logging produces lines like:
       2024-01-15 12:34:56 INFO     Rate limit check passed for user:42
   That's readable to a human but useless to a machine. You can't query it,
-  filter it, or aggregate it without fragile regex.
+  filter it, or aggregate it without fragile regex. 
 
   structlog produces:
       {"event": "rate_limit_check", "identifier": "user:42", "allowed": true,
